@@ -1,6 +1,9 @@
 package com.hendisantika.springbootjwtsample1.util;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Function;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,5 +24,10 @@ public class JwtUtil {
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
     }
 }

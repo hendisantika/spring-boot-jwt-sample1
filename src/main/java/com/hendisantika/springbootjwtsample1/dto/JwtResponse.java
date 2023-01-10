@@ -1,5 +1,6 @@
 package com.hendisantika.springbootjwtsample1.dto;
 
+import com.hendisantika.springbootjwtsample1.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,6 +17,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class JwtResponse {
-    private user;
+    private User user;
     private String jwtToken;
 }

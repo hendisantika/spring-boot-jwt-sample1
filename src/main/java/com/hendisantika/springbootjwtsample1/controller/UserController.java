@@ -1,6 +1,7 @@
 package com.hendisantika.springbootjwtsample1.controller;
 
 import com.hendisantika.springbootjwtsample1.service.UserService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,4 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+    @PostConstruct
+    public void initRoleAndUser() {
+        userService.initRoleAndUser();
+    }
 }

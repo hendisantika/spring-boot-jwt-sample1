@@ -1,9 +1,13 @@
 package com.hendisantika.springbootjwtsample1.service;
 
+import com.hendisantika.springbootjwtsample1.dto.JwtRequest;
+import com.hendisantika.springbootjwtsample1.dto.JwtResponse;
+import com.hendisantika.springbootjwtsample1.entity.User;
 import com.hendisantika.springbootjwtsample1.repository.UserRepository;
 import com.hendisantika.springbootjwtsample1.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +30,16 @@ public class JwtService implements UserDetailsService {
     private final UserRepository userRepository;
 
     private final AuthenticationManager authenticationManager;
+
+    public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
+        String userName = jwtRequest.getUserName();
+        String userPassword = jwtRequest.getUserPassword();
+        authenticate(userName, userPassword);
+
+        UserDetails userDetails = loadUserByUsername(userName);
+        String newGeneratedToken = jwtUtil.generateToken(userDetails);
+
+        User user = userRepository.findById(userName).get();
+        return new JwtResponse(user, newGeneratedToken);
+    }
 }

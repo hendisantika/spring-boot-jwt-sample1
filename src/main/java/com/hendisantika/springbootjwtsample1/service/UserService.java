@@ -73,4 +73,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public String getEncodedPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 }

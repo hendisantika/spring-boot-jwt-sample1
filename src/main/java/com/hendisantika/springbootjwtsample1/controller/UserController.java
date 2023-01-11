@@ -1,8 +1,11 @@
 package com.hendisantika.springbootjwtsample1.controller;
 
+import com.hendisantika.springbootjwtsample1.entity.User;
 import com.hendisantika.springbootjwtsample1.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,5 +27,10 @@ public class UserController {
     @PostConstruct
     public void initRoleAndUser() {
         userService.initRoleAndUser();
+    }
+
+    @PostMapping({"/registerNewUser"})
+    public User registerNewUser(@RequestBody User user) {
+        return userService.registerNewUser(user);
     }
 }

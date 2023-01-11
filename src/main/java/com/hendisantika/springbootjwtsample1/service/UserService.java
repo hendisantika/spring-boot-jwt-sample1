@@ -62,4 +62,15 @@ public class UserService {
 //        user.setRole(userRoles);
 //        userDao.save(user);
     }
+
+    public User registerNewUser(User user) {
+        Role role = roleRepository.findById("User").get();
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(role);
+        user.setRole(userRoles);
+        user.setUserPassword(getEncodedPassword(user.getUserPassword()));
+
+        return userRepository.save(user);
+    }
+
 }

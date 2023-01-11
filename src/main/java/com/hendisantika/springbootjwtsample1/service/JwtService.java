@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,5 +42,20 @@ public class JwtService implements UserDetailsService {
 
         User user = userRepository.findById(userName).get();
         return new JwtResponse(user, newGeneratedToken);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findById(username).get();
+
+        if (user != null) {
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUserName(),
+                    user.getUserPassword(),
+                    getAuthority(user)
+            );
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
     }
 }

@@ -7,10 +7,14 @@ import com.hendisantika.springbootjwtsample1.repository.UserRepository;
 import com.hendisantika.springbootjwtsample1.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,5 +61,13 @@ public class JwtService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+    }
+
+    private Set getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRole().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        });
+        return authorities;
     }
 }
